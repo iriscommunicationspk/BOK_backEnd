@@ -29,6 +29,7 @@ class Respondent extends Model
         'staff_interaction',
         'purpose_of_visit',
         'turn_around_time',
+        'over_all_satisfactory',
 
     ];
 }
