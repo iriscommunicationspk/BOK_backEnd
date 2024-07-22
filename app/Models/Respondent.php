@@ -25,6 +25,10 @@ class Respondent extends Model
         'loan_service',
         'credit_card',
         'city',
+        'branch',
+        'staff_interaction',
+        'purpose_of_visit',
+        'turn_around_time',
 
     ];
 }

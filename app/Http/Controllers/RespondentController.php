@@ -35,6 +35,10 @@ class RespondentController extends Controller
                 'loan_service' => $row[11] == 7 ? 'Yes' : 'null',
                 'credit_card' => $row[14] == 10 ? 'Yes' : 'null',
                 'city' => $row[44] == 1 ? 'Karachi' : ($row[44] == 2 ? 'Lahore' : 'Islamabad'),
+                'branch' => $row[45],
+                'purpose_of_visit' => $row[23] == 1 ? 'Highly dissatisfied' : ($row[23] == 2 ? 'Somewhat Dissatisfied' : ($row[23] == 3 ? 'Neither Satisfied nor Dissatisfied' : ($row[23] == 4 ? 'Somewhat Satisfied' : 'Highly satisfied'))), //Q#6
+                'staff_interaction' => $row[29] == 1 ? 'Highly dissatisfied' : ($row[29] == 2 ? 'Somewhat Dissatisfied' : ($row[29] == 3 ? 'Neither Satisfied nor Dissatisfied' : ($row[29] == 4 ? 'Somewhat Satisfied' : 'Highly satisfied'))), // Q#8
+                'turn_around_time' => $row[36] == 1 ? 'Highly dissatisfied' : ($row[36] == 2 ? 'Somewhat Dissatisfied' : ($row[36] == 3 ? 'Neither Satisfied nor Dissatisfied' : ($row[36] == 4 ? 'Somewhat Satisfied' : 'Highly satisfied'))), // Q#11
             ]);
         }
         return view('success_upload');
@@ -62,5 +66,10 @@ class RespondentController extends Controller
     {
         $respondents = Respondent::where('city', $city)->get();
         return response()->json($respondents);
-    }                   
+    }
+    public function purpose_of_visit($purpose_of_visit)
+    {
+        $respondents = Respondent::where('purpose_of_visit', $purpose_of_visit)->get();
+        return response()->json($respondents);
+    }
 }

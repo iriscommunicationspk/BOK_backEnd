@@ -21,6 +21,10 @@ class CreateRespondentsTable extends Migration
             $table->string('loan_service');
             $table->string('credit_card');
             $table->string('city');
+            $table->string('branch');
+            $table->string('staff_interaction');
+            $table->string('purpose_of_visit');
+            $table->string('turn_around_time');
             $table->timestamps();
         });
     }
