@@ -26,9 +26,11 @@ class CreateRespondentsTable extends Migration
             $table->string('purpose_of_visit');
             $table->string('turn_around_time');
             $table->string('over_all_satisfactory');
+            $table->date('Date');
             $table->timestamps();
         });
     }
+
 
     public function down()
     {
