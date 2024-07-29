@@ -12,10 +12,19 @@ class RespondentController extends Controller
 {
     public function import(Request $request)
     {
-        $filePath = database_path('seeders/data.xlsx');
+        // $filePath = database_path('seeders/data.xlsx');
+
+
+        // Validate the uploaded file
+        $request->validate([
+            'file' => 'required|mimes:xlsx'
+        ]);
+
+        // Get the uploaded file
+        $file = $request->file('file');
 
         // Load the Excel file
-        $data = Excel::toArray([], $filePath)[0];
+        $data = Excel::toArray([], $file)[0];
 
         // Skip the header row
         $header = array_shift($data);
