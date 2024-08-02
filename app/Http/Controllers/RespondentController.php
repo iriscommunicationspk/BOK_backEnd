@@ -33,6 +33,8 @@ class RespondentController extends Controller
         // Assuming the data is in the second column and needs to be mapped to gender
         foreach ($data as $row) {
 
+            // echo "Row data: " . print_r($row[46], true) . "\n";
+
             $dateValue = $row[43];
             // Convert the Excel serial date to a Carbon date
             $formattedDate = Carbon::createFromDate(1900, 1, 1)->addDays($dateValue - 2)->format('Y-m-d');
@@ -59,7 +61,8 @@ class RespondentController extends Controller
                 // End Of file 
                 'Date' => $formattedDate,
                 'city' => $row[44] == 1 ? 'Karachi' : ($row[44] == 2 ? 'Lahore' : 'Islamabad'),
-                'branch' => $row[45],
+                'branch' => $row[46] == 30 ? 'Shahrah-e-Faisal, Karachi' : ($row[46] == 425 ? 'Z Block DHA Phase III, Lahore' : 'I-10 Markaz, Islamabad'), //fetching with branch code 
+
 
                 //Q#6
                 'purpose_of_visit' => $row[23] == 1 ? 'Highly dissatisfied' : ($row[23] == 2 ? 'Somewhat Dissatisfied' : ($row[23] == 3 ? 'Neither Satisfied nor Dissatisfied' : ($row[23] == 4 ? 'Somewhat Satisfied' : 'Highly satisfied'))),
@@ -69,6 +72,7 @@ class RespondentController extends Controller
                 'turn_around_time' => $row[36] == 1 ? 'Highly dissatisfied' : ($row[36] == 2 ? 'Somewhat Dissatisfied' : ($row[36] == 3 ? 'Neither Satisfied nor Dissatisfied' : ($row[36] == 4 ? 'Somewhat Satisfied' : 'Highly satisfied'))),
                 //Q#12
                 'over_all_satisfactory' => $row[37] == 1 ? 'Highly dissatisfied' : ($row[37] == 2 ? 'Somewhat Dissatisfied' : ($row[37] == 3 ? 'Neither Satisfied nor Dissatisfied' : ($row[37] == 4 ? 'Somewhat Satisfied' : 'Highly satisfied'))),
+
             ]);
         }
         return view('success_upload');
