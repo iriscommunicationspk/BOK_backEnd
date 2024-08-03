@@ -51,11 +51,11 @@ class RespondentController extends Controller
                 // Q#5
                 'existing_customers' => $row[3],
                 'widrawing_money' => $row[5] == 1 ? 'Yes' : 'null',
-                'deposit' => $row[7] == 3 ? 'Yes' : 'null',
-                'closing_acc' => $row[9] == 5 ? 'Yes' : 'null',
-                'transfering_fund' => $row[10] == 6 ? 'Yes' : 'null',
-                'loan_service' => $row[11] == 7 ? 'Yes' : 'null',
-                'credit_card' => $row[14] == 10 ? 'Yes' : 'null',
+                'deposit' => $row[5] == 3 ? 'Yes' : 'null',
+                'closing_acc' => $row[5] == 5 ? 'Yes' : 'null',
+                'transfering_fund' => $row[5] == 6 ? 'Yes' : 'null',
+                'loan_service' => $row[5] == 7 ? 'Yes' : 'null',
+                'credit_card' => $row[5] == 10 ? 'Yes' : 'null',
                 // End
 
                 // End Of file 
