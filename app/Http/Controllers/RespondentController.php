@@ -50,12 +50,14 @@ class RespondentController extends Controller
 
                 // Q#5
                 'existing_customers' => $row[3],
-                'widrawing_money' => $row[5] == 1 ? 'Yes' : 'null',
-                'deposit' => $row[5] == 3 ? 'Yes' : 'null',
-                'closing_acc' => $row[5] == 5 ? 'Yes' : 'null',
-                'transfering_fund' => $row[5] == 6 ? 'Yes' : 'null',
-                'loan_service' => $row[5] == 7 ? 'Yes' : 'null',
-                'credit_card' => $row[5] == 10 ? 'Yes' : 'null',
+                'widrawing_money' => ($row[5] == 1 || $row[6] == 1 || $row[7] == 1 || $row[8] == 1) ? 'Yes' : 'null',
+                'deposit' => ($row[5] == 3 || $row[6] == 3 || $row[7] == 3 || $row[8] == 3) ? 'Yes' : 'null',
+                'closing_acc' => ($row[5] == 5 || $row[6] == 5 || $row[7] == 5 || $row[8] == 5) ? 'Yes' : 'null',
+                'transfering_fund' => ($row[5] == 6 || $row[6] == 6 || $row[7] == 6 || $row[8] == 6) ? 'Yes' : 'null',
+                'loan_service' => ($row[5] == 7 || $row[6] == 7 || $row[7] == 7 || $row[8] == 7) ? 'Yes' : 'null',
+                'credit_card' => ($row[5] == 10 || $row[6] == 10 || $row[7] == 10 || $row[8] == 10) ? 'Yes' : 'null',
+                'payment_dues' => ($row[5] == 17 || $row[6] == 17 || $row[7] == 17 || $row[8] == 17) ? 'Yes' : 'null',
+                'cheque_deposit' => ($row[5] == 18 || $row[6] == 18 || $row[7] == 18 || $row[8] == 18) ? 'Yes' : 'null',
                 // End
 
                 // End Of file 
@@ -68,6 +70,9 @@ class RespondentController extends Controller
                 'purpose_of_visit' => $row[23] == 1 ? 'Highly dissatisfied' : ($row[23] == 2 ? 'Somewhat Dissatisfied' : ($row[23] == 3 ? 'Neither Satisfied nor Dissatisfied' : ($row[23] == 4 ? 'Somewhat Satisfied' : 'Highly satisfied'))),
                 // Q#8
                 'staff_interaction' => $row[29] == 1 ? 'Highly dissatisfied' : ($row[29] == 2 ? 'Somewhat Dissatisfied' : ($row[29] == 3 ? 'Neither Satisfied nor Dissatisfied' : ($row[29] == 4 ? 'Somewhat Satisfied' : 'Highly satisfied'))),
+                // Q#10
+                'turn_around_time_mins' => $row[35],
+
                 // Q#11
                 'turn_around_time' => $row[36] == 1 ? 'Highly dissatisfied' : ($row[36] == 2 ? 'Somewhat Dissatisfied' : ($row[36] == 3 ? 'Neither Satisfied nor Dissatisfied' : ($row[36] == 4 ? 'Somewhat Satisfied' : 'Highly satisfied'))),
                 //Q#12

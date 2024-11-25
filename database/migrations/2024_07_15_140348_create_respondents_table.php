@@ -20,12 +20,15 @@ class CreateRespondentsTable extends Migration
             $table->string('transfering_fund');
             $table->string('loan_service');
             $table->string('credit_card');
+            $table->string('cheque_deposit');
+            $table->string('payment_dues');
             $table->string('city');
             $table->string('branch');
             $table->string('staff_interaction');
             $table->string('purpose_of_visit');
             $table->string('turn_around_time');
             $table->string('over_all_satisfactory');
+            $table->string('turn_around_time_mins');
             $table->date('Date');
             $table->timestamps();
         });

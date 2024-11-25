@@ -30,7 +30,10 @@ class Respondent extends Model
         'purpose_of_visit',
         'turn_around_time',
         'over_all_satisfactory',
-        'Date'
+        'Date',
+        'payment_dues',
+        'cheque_deposit',
+        'turn_around_time_mins'
 
     ];
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\RespondentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +25,4 @@ Route::get('/example', function (Request $request) {
 });
 
 Route::post('/import', [RespondentController::class, 'import'])->name('import');
+Route::get('/get-gender', [RespondentController::class, 'get_gender'])->name('gender');
