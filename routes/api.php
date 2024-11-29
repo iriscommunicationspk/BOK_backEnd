@@ -25,4 +25,4 @@ Route::get('/example', function (Request $request) {
 });
 
 Route::post('/import', [RespondentController::class, 'import'])->name('import');
-Route::get('/get-gender', [RespondentController::class, 'get_gender'])->name('gender');
+Route::get('/raw', [RespondentController::class, 'index'])->name('gender');

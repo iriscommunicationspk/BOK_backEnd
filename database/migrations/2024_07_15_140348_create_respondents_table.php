@@ -11,25 +11,20 @@ class CreateRespondentsTable extends Migration
     {
         Schema::create('respondents', function (Blueprint $table) {
             $table->id();
-            $table->string('gender');
-            $table->string('account_holder');
-            $table->string('existing_customers');
-            $table->string('widrawing_money');
-            $table->string('deposit');
-            $table->string('closing_acc');
-            $table->string('transfering_fund');
-            $table->string('loan_service');
-            $table->string('credit_card');
-            $table->string('cheque_deposit');
-            $table->string('payment_dues');
-            $table->string('city');
-            $table->string('branch');
-            $table->string('staff_interaction');
-            $table->string('purpose_of_visit');
-            $table->string('turn_around_time');
-            $table->string('over_all_satisfactory');
-            $table->string('turn_around_time_mins');
-            $table->date('Date');
+            $table->string('sr_number')->nullable();
+            $table->string('branch_code')->nullable();
+            $table->string('branch_type_code')->nullable();
+            $table->string('code_scenarios')->nullable();
+            $table->string('city_codes')->nullable();
+            $table->string('province_codes')->nullable();
+            $table->decimal('section_1_branch_exterior')->nullable(); // Scores with precision (e.g., 99.99)
+            $table->decimal('section_2_branch_internal', 5, 2)->nullable();
+            $table->decimal('section_3_customer_services', 5, 2)->nullable();
+            $table->decimal('section_4_product_knowledge', 5, 2)->nullable();
+            $table->decimal('section_5_cash_counter_services', 5, 2)->nullable();
+            $table->decimal('section_6_atm_services', 5, 2)->nullable();
+            $table->decimal('overall', 5, 2)->nullable();
+            $table->string('overall_performance')->nullable();
             $table->timestamps();
         });
     }

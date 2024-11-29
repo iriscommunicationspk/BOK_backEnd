@@ -15,25 +15,19 @@ class Respondent extends Model
      * @var array
      */
     protected $fillable = [
-        'gender',
-        'account_holder',
-        'existing_customers',
-        'widrawing_money',
-        'deposit',
-        'closing_acc',
-        'transfering_fund',
-        'loan_service',
-        'credit_card',
-        'city',
-        'branch',
-        'staff_interaction',
-        'purpose_of_visit',
-        'turn_around_time',
-        'over_all_satisfactory',
-        'Date',
-        'payment_dues',
-        'cheque_deposit',
-        'turn_around_time_mins'
-
+        'sr_number',
+        'branch_code',
+        'branch_type_code',
+        'code_scenarios',
+        'city_codes',
+        'province_codes',
+        'section_1_branch_exterior',
+        'section_2_branch_internal',
+        'section_3_customer_services',
+        'section_4_product_knowledge',
+        'section_5_cash_counter_services',
+        'section_6_atm_services',
+        'overall',
+        'overall_performance',
     ];
 }

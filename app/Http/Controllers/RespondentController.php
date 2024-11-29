@@ -1,23 +1,27 @@
 <?php
 
-// app/Http/Controllers/RespondentController.php
 namespace App\Http\Controllers;
 
 use App\Models\Respondent;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 
 class RespondentController extends Controller
 {
+    /**
+     * Import data from Excel and store in database.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function import(Request $request)
     {
-        // $filePath = database_path('seeders/data.xlsx');
-
+        $count = 0;
 
         // Validate the uploaded file
         $request->validate([
-            'file' => 'required|mimes:xlsx'
+            'file' => 'required|mimes:xlsx,xls',
         ]);
 
         // Get the uploaded file
@@ -28,87 +32,63 @@ class RespondentController extends Controller
 
         // Skip the header row
         $header = array_shift($data);
-        $header2 = array_shift($data);
 
-        // Assuming the data is in the second column and needs to be mapped to gender
+        // Check if the data is empty
+        if (empty($data)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'The uploaded file contains no data.',
+            ], 400);
+        }
+
+        // Loop through rows and insert into the database
         foreach ($data as $row) {
-
-            // echo "Row data: " . print_r($row[46], true) . "\n";
-
-            $dateValue = $row[43];
-            // Convert the Excel serial date to a Carbon date
-            $formattedDate = Carbon::createFromDate(1900, 1, 1)->addDays($dateValue - 2)->format('Y-m-d');
-            // echo "Formatted date value: " . $formattedDate . "\n";
-
-
-
-
+            $count++;
             Respondent::create([
-
-                'gender' => $row[1] == 1 ? 'Male' : 'Female', //Q#1
-                'account_holder' => isset($row[2]) ? ($row[2] == 1 ? 'Yes' : 'No') : 'No', // Defaulting to 'No' if not set Q#2
-
-                // Q#5
-                'existing_customers' => $row[3],
-                'widrawing_money' => ($row[5] == 1 || $row[6] == 1 || $row[7] == 1 || $row[8] == 1) ? 'Yes' : 'null',
-                'deposit' => ($row[5] == 3 || $row[6] == 3 || $row[7] == 3 || $row[8] == 3) ? 'Yes' : 'null',
-                'closing_acc' => ($row[5] == 5 || $row[6] == 5 || $row[7] == 5 || $row[8] == 5) ? 'Yes' : 'null',
-                'transfering_fund' => ($row[5] == 6 || $row[6] == 6 || $row[7] == 6 || $row[8] == 6) ? 'Yes' : 'null',
-                'loan_service' => ($row[5] == 7 || $row[6] == 7 || $row[7] == 7 || $row[8] == 7) ? 'Yes' : 'null',
-                'credit_card' => ($row[5] == 10 || $row[6] == 10 || $row[7] == 10 || $row[8] == 10) ? 'Yes' : 'null',
-                'payment_dues' => ($row[5] == 17 || $row[6] == 17 || $row[7] == 17 || $row[8] == 17) ? 'Yes' : 'null',
-                'cheque_deposit' => ($row[5] == 18 || $row[6] == 18 || $row[7] == 18 || $row[8] == 18) ? 'Yes' : 'null',
-                // End
-
-                // End Of file 
-                'Date' => $formattedDate,
-                'city' => $row[44] == 1 ? 'Karachi' : ($row[44] == 2 ? 'Lahore' : 'Islamabad'),
-                'branch' => $row[46] == 30 ? 'Shahrah-e-Faisal, Karachi' : ($row[46] == 425 ? 'Z Block DHA Phase III, Lahore' : 'I-10 Markaz, Islamabad'), //fetching with branch code 
-
-
-                //Q#6
-                'purpose_of_visit' => $row[23] == 1 ? 'Highly dissatisfied' : ($row[23] == 2 ? 'Somewhat Dissatisfied' : ($row[23] == 3 ? 'Neither Satisfied nor Dissatisfied' : ($row[23] == 4 ? 'Somewhat Satisfied' : 'Highly satisfied'))),
-                // Q#8
-                'staff_interaction' => $row[29] == 1 ? 'Highly dissatisfied' : ($row[29] == 2 ? 'Somewhat Dissatisfied' : ($row[29] == 3 ? 'Neither Satisfied nor Dissatisfied' : ($row[29] == 4 ? 'Somewhat Satisfied' : 'Highly satisfied'))),
-                // Q#10
-                'turn_around_time_mins' => $row[35],
-
-                // Q#11
-                'turn_around_time' => $row[36] == 1 ? 'Highly dissatisfied' : ($row[36] == 2 ? 'Somewhat Dissatisfied' : ($row[36] == 3 ? 'Neither Satisfied nor Dissatisfied' : ($row[36] == 4 ? 'Somewhat Satisfied' : 'Highly satisfied'))),
-                //Q#12
-                'over_all_satisfactory' => $row[37] == 1 ? 'Highly dissatisfied' : ($row[37] == 2 ? 'Somewhat Dissatisfied' : ($row[37] == 3 ? 'Neither Satisfied nor Dissatisfied' : ($row[37] == 4 ? 'Somewhat Satisfied' : 'Highly satisfied'))),
-
+                'sr_number' => $row[0] ?? null, // Sr. #
+                'branch_code' => $row[1] ?? null, // Br Code
+                'branch_type_code' => $row[2] ?? null, // Branch Type Code
+                'code_scenarios' => $row[3] ?? null, // Code Scenarios
+                'city_codes' => $row[4] ?? null, // City Codes
+                'province_codes' => $row[5] ?? null, // Province Codes
+                'section_1_branch_exterior' => $row[6] ?? null, // Section 1 - Branch Exterior & Outlook
+                'section_2_branch_internal' => $row[7] ?? null, // Section 2 - Branch Internal Ambiance
+                'section_3_customer_services' => $row[8] ?? null, // Section 3 - Customer Services-Branch Visit
+                'section_4_product_knowledge' => $row[9] ?? null, // Section 4 - Product Knowledge / Fair Treatment
+                'section_5_cash_counter_services' => $row[10] ?? null, // Section 5 - Cash Counter Services
+                'section_6_atm_services' => $row[11] ?? null, // Section 6 - ATM Services
+                'overall' => $row[12] ?? null, // Overall
+                'overall_performance' => $row[13] ?? null, // Overall Branch Performance
             ]);
         }
-        return view('success_upload');
+
+        // Store the count in the session
+        Session::put('imported_count', $count);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'File imported successfully.',
+            'count' => $count,
+        ]);
     }
 
-
-    public function get_gender()
+    /**
+     * Retrieve all Respondents data and the imported count.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index()
     {
+        // Retrieve all respondents
         $respondents = Respondent::all();
-        return response()->json($respondents);
-    }
 
-    public function get_data_by_gender($gender)
-    {
-        $respondents = Respondent::where('gender', $gender)->get();
-        return response()->json($respondents);
-    }
+        // Dynamically count the number of records
+        $count = $respondents->count();
 
-    public function get_data_by_account_holder($account_holder)
-    {
-        $respondents = Respondent::where('account_holder', $account_holder)->get();
-        return response()->json($respondents);
-    }
-    public function get_data_by_city($city)
-    {
-        $respondents = Respondent::where('city', $city)->get();
-        return response()->json($respondents);
-    }
-    public function purpose_of_visit($purpose_of_visit)
-    {
-        $respondents = Respondent::where('purpose_of_visit', $purpose_of_visit)->get();
-        return response()->json($respondents);
+        return response()->json([
+            'success' => true,
+            'count' => $count,
+            'data' => $respondents,
+        ]);
     }
 }
